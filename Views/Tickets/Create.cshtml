@@ -1,0 +1,284 @@
+﻿@model BookaFlight.Models.Ticket
+
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Http;
+@using BookaFlight.Data;
+@using System.Linq;
+@inject BookaFlight.Data.ApplicationDbContext dbContext
+
+@{
+    ViewData["Title"] = "Create";
+}
+@functions{
+    string firstName()
+    {
+
+        var confirmation = from e in dbContext.Users
+                           where e.Id == UserManager.GetUserId(User)
+                           select e.FirstName;
+
+        var result = confirmation.First().ToString();
+        return result;
+    }
+    string lastName()
+    {
+
+        var confirmation = from e in dbContext.Users
+                           where e.Id == UserManager.GetUserId(User)
+                           select e.LastName;
+
+        var result = confirmation.First().ToString();
+        return result;
+    }
+    DateTime dateOfBirth()
+    {
+
+        var confirmation = from e in dbContext.Users
+                           where e.Id == UserManager.GetUserId(User)
+                           select e.DateOfBirth;
+
+        var result = confirmation.First();
+        return result;
+    }
+    string passportNumber() {
+        var confirmation = from e in dbContext.Users
+                           where e.Id == UserManager.GetUserId(User)
+                           select e.PassportNumber;
+
+        var result = confirmation.First().ToString();
+        return result;
+    }
+
+    string flightNumber()
+    {
+        var originConf = from f in dbContext.Flight
+                         select f.FlightNumber;
+
+        var result = originConf.First().ToString();
+        return result;
+    }
+    string destination()
+    {
+        var originConf = from f in dbContext.Flight
+                         select f.Destination;
+
+        var result = originConf.First().ToString();
+        return result;
+    }
+    DateTime departure()
+    {
+        var originConf = from f in dbContext.Flight
+                         select f.Departure;
+
+        var result = originConf.First();
+        return result;
+    }
+    DateTime returnDate()
+    {
+        var originConf = from f in dbContext.Flight
+                         select f.Return;
+
+        var result = originConf.First();
+        return result;
+    }
+}
+<style>
+    .myButton {
+        box-shadow: inset 0px 1px 0px 0px #cee4f2;
+        background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+        background-color: #63b8ee;
+        border-radius: 8px;
+        border: 2px solid #3866a3;
+        display: inline-block;
+        cursor: pointer;
+        color: #12407d;
+        font-family: Verdana;
+        font-size: 15px;
+        font-weight: bold;
+        padding: 8px 24px;
+        text-decoration: none;
+        text-shadow: 1px 2px 0px #7cacde;
+        align-self: center;
+    }
+
+        .myButton:hover {
+            background: linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+            background-color: #468ccf;
+        }
+
+        .myButton:active {
+            position: relative;
+            top: 1px;
+        }
+</style>
+    <h1>Book Your Ticket</h1>
+
+    <hr />
+    <div class="row">
+        
+            <form asp-action="Create" class="form-createTicket">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <br />
+                <br />
+                <div class="sub-entry">
+                    <div class="sub-full">
+                        <div class="form-group">
+                            <label asp-for="PassportNumber" class="control-label"></label>
+                            <input asp-for="PassportNumber" class="form-control" id="passportNumber" onchange="display()" />
+                            <input type="hidden" id="hiddenPass" value="" />
+                            <span asp-validation-for="PassportNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FirstName" class="control-label"></label>
+                            <input asp-for="FirstName" class="form-control" id="firstName" value="" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="LastName" class="control-label"></label>
+                            <input asp-for="LastName" class="form-control" id="lastName" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="DateOfBirth" class="control-label"></label>
+                            <input asp-for="DateOfBirth" class="form-control" id="dateOfBirth" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sub-entry">
+                    <div class="sub-full">
+                        <div class="form-group">
+                            <label asp-for="FlightNumber" class="control-label"></label>
+                            <input asp-for="FlightNumber" class="form-control" id="flightNumber" onchange="display()" />
+                            <span asp-validation-for="FlightNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Origin" class="control-label"></label>
+                            <select asp-for="Origin"
+                                    class="form-control"
+                                    asp-items="@(new SelectList(@ViewBag.Flight, "Origin", "Origin"))">
+                            </select>
+                            <span asp-validation-for="Origin" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Destination" class="control-label"></label>
+                            <input asp-for="Destination" class="form-control" id="destination" />
+                            <span asp-validation-for="Destination" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Departure" class="control-label"></label>
+                            <input asp-for="Departure" class="form-control" id="departure" />
+                            <span asp-validation-for="Departure" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Return" class="control-label"></label>
+                            <input asp-for="Return" class="form-control" id="return" />
+                            <span asp-validation-for="Return" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="FreeCarryOnBag" /> @Html.DisplayNameFor(model => model.FreeCarryOnBag)
+                            </label>
+                        </div>
+
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="TrolleyBag" /> @Html.DisplayNameFor(model => model.TrolleyBag)
+                            </label>
+                        </div>
+
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="CheckedInBag" /> @Html.DisplayNameFor(model => model.CheckedInBag)
+                            </label>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="myButton" style="margin-left:40%" />
+                    </div>
+            </form>
+        
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+
+        $("#passportNumber").on("change", function () {
+
+        let valuePass = $("#passportNumber").val();
+        let pasNum = "@passportNumber()";
+
+        if (valuePass === pasNum)
+        {
+            displayFirstName();
+            displayLastName();
+
+        }
+        });
+        $("#flightNumber").on("change", function () {
+
+            let valueFlight = $("#flightNumber").val();
+            let valueFlightNumber = "@flightNumber().ToString()";
+
+            if (valueFlightNumber == valueFlight) {
+                displayReturn();
+                displayDeparture();
+                displayDestination();
+            }
+        });
+        function displayFirstName() {
+            let valueFirstName = "@firstName()";
+            let inputFirstName = document.getElementById("firstName");
+            inputFirstName.value = valueFirstName;
+        }
+        function displayLastName() {
+            let valueLastName = "@lastName()";
+            let inputLastName = document.getElementById("lastName");
+            inputLastName.value = valueLastName;
+        }
+        function displayDateOfBirth() {
+            let valueDate = "@dateOfBirth()";
+            console.log(valueDate);
+            let inputDate = document.getElementById("dateOfBirth");
+            inputDate.value = valueDate;
+        }
+
+        function displayDestination() {
+            let valueDestination = "@destination()";
+            let inputDestination = document.getElementById("destination");
+            inputDestination.value = valueDestination;
+        }
+        function displayDeparture() {
+            let valueDeparture = "@departure()";
+            let inputDeparture = document.getElementById("departure");
+            inputDeparture.value = valueDeparture;
+        }
+        function displayReturn() {
+            let valueReturn = "@returnDate()";
+            let inputReturn = document.getElementById("return");
+            inputReturn.value = valueReturn;
+        }
+
+    </script>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

@@ -1,0 +1,54 @@
+﻿@model BookaFlight.Models.Ticket
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject BookaFlight.Data.ApplicationDbContext dbContext
+
+@using System.Linq
+@functions{
+    public string firstName(string pass) {
+
+        var confirmation = from e in dbContext.Users
+                           where e.PassportNumber == pass
+                           select e.FirstName;
+        var result = confirmation.First().ToString();
+        return result;
+    }
+    public string lastName(string pass)
+    {
+
+        var confirmation = from e in dbContext.Users
+                           where e.PassportNumber == pass
+                           select e.LastName;
+        var result = confirmation.First().ToString();
+        return result;
+    }
+    public string dateOfBirth(string pass)
+    {
+
+        var confirmation = from e in dbContext.Users
+                           where e.PassportNumber == pass
+                           select e.DateOfBirth;
+        var result = confirmation.First().ToString();
+        return result;
+    }
+
+}
+@{
+    <div class="form-group">
+        <label asp-for="FirstName" class="control-label"></label>
+        <input asp-for="FirstName" class="form-control" id="firstName" value="@firstName(Model.PassportNumber)" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+     
+    <div class="form-group">
+        <label asp-for="LastName" class="control-label"></label>
+        <input asp-for="LastName" class="form-control" id="lastName" value="@lastName(Model.PassportNumber)" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateOfBirth" class="control-label"></label>
+        <input asp-for="DateOfBirth" class="form-control" id="dateOfBirth" value="@dateOfBirth(Model.PassportNumber)" />
+        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+    </div>
+}

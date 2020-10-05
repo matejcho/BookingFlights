@@ -1,0 +1,105 @@
+﻿@page
+@model BookaFlight.Areas.Identity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<style>
+    .row {
+        padding-left: 30%;
+    }
+    .card{
+        background-color:lavender;
+    }
+    .myButton {
+        box-shadow: inset 0px 1px 0px 0px #cee4f2;
+        background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
+        background-color: #63b8ee;
+        border-radius: 8px;
+        border: 2px solid #3866a3;
+        display: inline-block;
+        cursor: pointer;
+        color: #12407d;
+        font-family: Verdana;
+        font-size: 15px;
+        font-weight: bold;
+        padding: 8px 24px;
+        text-decoration: none;
+        text-shadow: 1px 2px 0px #7cacde;
+        align-self:center;
+    }
+
+        .myButton:hover {
+            background: linear-gradient(to bottom, #468ccf 5%, #63b8ee 100%);
+            background-color: #468ccf;
+        }
+
+        .myButton:active {
+            position: relative;
+            top: 1px;
+        }
+        .buttonn{
+            padding-left:27%;
+        }
+</style>
+
+<div class="row" >
+    <section class="form-elegant">
+        <div class="card">
+            <div class="card-body mx-4">
+                <div class="text-center">
+                    <h3 class="dark-grey-text mb-5"><strong>Register</strong></h3>
+                </div>
+                <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Input.FirstName"></label>
+                        <input asp-for="Input.FirstName" class="form-control" />
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.LastName"></label>
+                        <input asp-for="Input.LastName" class="form-control" />
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.PassportNumber"></label>
+                        <input asp-for="Input.PassportNumber" class="form-control" />
+                        <span asp-validation-for="Input.PassportNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.DateOfBirth"></label>
+                        <input asp-for="Input.DateOfBirth" class="form-control" />
+                        <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Email"></label>
+                        <input asp-for="Input.Email" id="Form-email1" class="form-control" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Password"></label>
+                        <input asp-for="Input.Password" id="Form-pass1" class="form-control" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.ConfirmPassword"></label>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="buttonn">
+                        <button type="submit" class="myButton">Register</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+    
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
